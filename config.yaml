@@ -1,0 +1,60 @@
+# PumpPredictor configuration
+# All windows are in trading days.
+
+paths:
+  data_dir: data
+  ohlcv_dir: data/ohlcv
+  text_dir: data/text          # drop earnings-call transcripts / press releases here: data/text/<TICKER>/*.txt
+  universe_file: data/universe.csv
+  dataset_file: data/dataset.parquet
+  model_dir: models
+
+universe:
+  max_price: 5.00              # SEC definition of a penny stock: < $5/share
+  min_price: 0.01              # exclude sub-penny ghosts with no real trading
+  min_median_dollar_volume: 5000    # exclude totally dead tickers (can't trade them anyway)
+  max_market_cap: 300000000    # microcap ceiling ($300M); pumps concentrate far below this
+  max_tickers: 400             # cap universe size for download time; raise for real runs
+  exclude_etfs: true
+
+data:
+  history_period: 2y           # how much daily history to download
+  batch_size: 50               # tickers per yfinance batch request
+
+labeling:
+  # Based on Nam & Frank (arXiv:2301.11403): pump = price AND volume exceed
+  # baseline mean + z_threshold * baseline std, within the forward window.
+  # The min_* floors guard against flat baselines where sigma ~ 0 makes 2-sigma trivial.
+  baseline_window: 5           # days used to establish "quiet" baseline (BAP/BAV)
+  forward_window: 5            # days ahead in which the pump must occur (dumps complete in ~4 days)
+  z_threshold: 2.0
+  min_forward_gain: 0.25       # forward max DAP must be >= +25% over baseline avg price
+  min_volume_multiple: 3.0     # forward max volume must be >= 3x baseline avg volume
+
+features:
+  vol_windows: [5, 20]
+  ret_windows: [1, 5, 10, 20]
+  volume_baseline_window: 20
+  spike_lookback: 180          # window for counting prior pump-like spikes (promotion history)
+  spike_z: 3.0
+
+model:
+  test_fraction: 0.2           # most-recent dates held out for testing (time-based split)
+  n_cv_splits: 3               # walk-forward CV folds within the training period
+  precision_at_k: 20           # evaluate precision in the top-k daily candidates
+  # Heavily regularized: pump signal is mostly linear/cross-sectional and
+  # deep trees overfit the time dimension (verified by config sweep — shallow
+  # stumps beat 63-leaf trees out-of-time by a wide margin).
+  lightgbm:
+    n_estimators: 500
+    learning_rate: 0.03
+    num_leaves: 3
+    min_child_samples: 1000
+    subsample: 0.7
+    colsample_bytree: 0.6
+    reg_lambda: 20.0
+
+scan:
+  top_n: 25                    # number of ranked candidates to output
+  enable_social: false         # StockTwits live features (network calls per ticker)
+  enable_news: false           # yfinance news + lexicon/FinBERT scoring (live only)

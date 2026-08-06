@@ -1,0 +1,31 @@
+{
+  "logistic": {
+    "roc_auc": 0.7914115641021109,
+    "pr_auc": 0.10509206544386371,
+    "precision_at_20": 0.14526315789473687
+  },
+  "lightgbm": {
+    "roc_auc": 0.8053950281259735,
+    "pr_auc": 0.11757490983250074,
+    "precision_at_20": 0.14473684210526316
+  },
+  "test_base_rate": 0.027353113514089384,
+  "best_iteration": 500,
+  "top_features": {
+    "close_vs_baseline": 0.2166,
+    "amihud_20d": 0.1562,
+    "hl_range_20d": 0.1265,
+    "parkinson_vol_20d": 0.1212,
+    "ret_1d": 0.0657,
+    "log_close": 0.0487,
+    "dist_52w_high": 0.044,
+    "ret_5d": 0.0399,
+    "volume_z": 0.0308,
+    "ret_20d": 0.0301,
+    "volume_ratio_5_60": 0.0244,
+    "log_dollar_vol_20d": 0.0226,
+    "short_pct_float": 0.0206,
+    "float_ratio": 0.0095,
+    "pos_52w": 0.0088
+  }
+}

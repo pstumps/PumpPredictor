@@ -1,0 +1,17 @@
+yfinance>=0.2.40
+pandas>=2.0
+numpy>=1.24
+scikit-learn>=1.3
+lightgbm>=4.0
+pyarrow>=14.0
+pyyaml>=6.0
+joblib>=1.3
+requests>=2.31
+
+# Optional — deep NLP scoring of news / transcripts (large download):
+# transformers>=4.40
+# torch>=2.2
+# Optional — Reddit mention features:
+# praw>=7.7
+# Optional — SHAP feature attribution:
+# shap>=0.44
