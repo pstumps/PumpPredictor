@@ -72,12 +72,12 @@ model. The metrics that matter here:
 
 | Source | Status | Note |
 |---|---|---|
-| Daily OHLCV (yfinance) | ✅ full history | backbone of training |
-| Fundamentals (yfinance) | ⚠️ current snapshot | not point-in-time; upgrade to SEC EDGAR facts |
-| News headlines (yfinance) | ⚠️ recent only | live scans; archive accrues if you run daily |
-| Earnings calls / PRs | 📁 bring your own | drop .txt into `data/text/<TICKER>/`; scored by lexicons/FinBERT. True OTC issuers rarely hold calls |
-| StockTwits / Reddit | ⚠️ live only | free APIs have no history; the pipeline can accumulate its own archive over daily runs |
-| OTC Markets promotion flag | 💰 paid feed | best label-quality upgrade if acquired |
+| Daily OHLCV (yfinance) | full history | backbone of training |
+| Fundamentals (yfinance) | current snapshot | not point-in-time; upgrade to SEC EDGAR facts |
+| News headlines (yfinance) | recent only | live scans; archive accrues if you run daily |
+| Earnings calls / PRs | bring your own | drop .txt into `data/text/<TICKER>/`; scored by lexicons/FinBERT. True OTC issuers rarely hold calls |
+| StockTwits / Reddit | live only | free APIs have no history; the pipeline can accumulate its own archive over daily runs |
+| OTC Markets promotion flag | paid feed | best label-quality upgrade if acquired |
 
 ## Disclaimers
 
